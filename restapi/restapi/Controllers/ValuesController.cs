@@ -72,7 +72,7 @@ namespace restapi.Controllers
             jsonObject.Latitude = location.latitude;
             jsonObject.Longitude = location.longitude;
 
-            return jsonObject;
+            return jsonObject.ToString();
         }
 
     }
