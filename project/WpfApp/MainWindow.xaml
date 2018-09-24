@@ -30,7 +30,7 @@
         </DockPanel>
 
         <wpf:Map x:Name="myMap" ZoomLevel="15" Grid.Row="1" Margin="10" 
-                 CredentialsProvider="AkIt2soMZ8I2QGg7MmKHqhm0sbNpt2xflna-oGJKNPqwfr1GzQz_4u0IqjJ2U4t-"/>
+                 CredentialsProvider="ENTER-YOUR-BING-MAPS-CREDENTIAL-HERE"/>
 
     </Grid>
 </Window>

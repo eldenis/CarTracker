@@ -6,10 +6,7 @@ namespace restapi
     public static class LocationHelper
     {
         private static readonly Random Randomizer = new Random();
-        private const double ValidLatitude = 90;
-        private const double ValidLongitude = 180;
-        private const double KmChange = 0.1;
-        private const double EarthRadius = 6378;
+        private const double PositionDelta = 0.0001d;
 
 
         internal static (double latitude, double longitude) GetCurrentLocation(int id)
@@ -39,24 +36,22 @@ namespace restapi
             if (Randomizer.Next(2) > 0)
             {
                 //In this scenario we simulate an updated latitude
-                loc.latitude = loc.latitude + (KmChange / EarthRadius) * (180d / Math.PI);
+                loc.latitude = loc.latitude + PositionDelta;
             }
             else
             {
                 //Simulated longitude change
-                loc.longitude = (loc.longitude + (KmChange / EarthRadius) * (180d / Math.PI)) / Math.Cos(loc.latitude * Math.PI / 180d);
+                loc.longitude = loc.longitude + PositionDelta;
             }
 
             Locations[id] = loc;
         }
-
+        
 
         private static (double latitude, double longitude) GetRandomStartingPoint()
         {
-            var lat = Randomizer.NextDouble() * ValidLatitude * (Randomizer.Next(2) > 0 ? -1 : 1);
-            var @long = Randomizer.NextDouble() * ValidLongitude * (Randomizer.Next(2) > 0 ? -1 : 1);
-
-            return (lat, @long);
+            //Set inside the continental US
+            return (Randomizer.Next(31, 49), Randomizer.Next(-121, -75));
         }
 
         private static readonly Dictionary<int, (double latitude, double longitude)> Locations = new Dictionary<int, (double latitude, double longitude)>();

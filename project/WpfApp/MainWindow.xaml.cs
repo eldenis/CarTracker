@@ -1,8 +1,10 @@
-﻿using ReactiveUI;
+﻿using Microsoft.Maps.MapControl.WPF;
+using ReactiveUI;
 using Splat;
 using System;
 using System.Reactive.Linq;
 using System.Windows;
+using System.Windows.Media;
 
 namespace WpfApp
 {
@@ -16,18 +18,27 @@ namespace WpfApp
             InitializeComponent();
             ViewModel = Locator.CurrentMutable.GetService<MainViewModel>();
 
-            //ViewModel.UpdateCar
-            //    .ObserveOn(RxApp.MainThreadScheduler)
-            //    .Catch<int, Exception>(ex =>
-            //    {
-            //        MessageBox.Show(ex.Message, "", MessageBoxButton.OK, MessageBoxImage.Warning);
-            //        return null;
-            //    })
-            //    .Subscribe(newValue =>
-            //    {
-            //        ViewModel.FollowedCar = newValue;
-            //    });
+            ViewModel.LocationUpdate
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Subscribe(SetLocation);
+        }
 
+        private void SetLocation((double latitude, double longitude) newLocation)
+        {
+            //New location for the tracked vehicle.
+            var location = new Location(newLocation.latitude, newLocation.longitude);
+            //Remove previous pin
+            myMap.Children.Clear();
+            //Center pin and keep same Zoom Level
+            myMap.SetView(location, myMap.ZoomLevel);
+
+            var pin = new Pushpin
+            {
+                Location = location,
+                Background = Brushes.Green
+            };
+            //Add new pin to the map
+            myMap.Children.Add(pin);
         }
 
         /// <summary>
