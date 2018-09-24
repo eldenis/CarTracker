@@ -1,0 +1,36 @@
+﻿<Window x:Class="WpfApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:wpf="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
+        xmlns:local="clr-namespace:WpfApp"
+        DataContext="{Binding ViewModel,RelativeSource={RelativeSource Self}}"
+        d:DataContext="{d:DesignInstance Type=local:MainViewModel, IsDesignTimeCreatable=True}"   
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
+        Title="Car Tracker" Height="800" Width="1200">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <DockPanel>
+            <StackPanel Orientation="Horizontal" Margin="10" DockPanel.Dock="Left">
+                <Label>Car to follow</Label>
+                <TextBox Width="50" Text="{Binding NewCarToFollow, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
+                <Button Margin="15,0,0,0" Content="Update Followed Car"
+                        Command="{Binding UpdateCar}"/>
+            </StackPanel>
+
+            <TextBlock Text="{Binding FollowedCar,StringFormat=Following Car: {0}}"
+                       Margin="0,0,10,0"
+                       HorizontalAlignment="Right" VerticalAlignment="Center" DockPanel.Dock="Right"/>
+
+        </DockPanel>
+
+        <wpf:Map x:Name="myMap" ZoomLevel="15" Grid.Row="1" Margin="10" 
+                 CredentialsProvider="AkIt2soMZ8I2QGg7MmKHqhm0sbNpt2xflna-oGJKNPqwfr1GzQz_4u0IqjJ2U4t-"/>
+
+    </Grid>
+</Window>
